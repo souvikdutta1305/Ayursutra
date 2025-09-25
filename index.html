@@ -1,0 +1,2974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyurSutra - Advanced Ayurvedic Health Assessment</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --accent-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --success-gradient: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            --warning-gradient: linear-gradient(135deg, #ff9a56 0%, #ffad56 100%);
+            --dark-text: #2c3e50;
+            --light-text: #7f8c8d;
+            --border-radius: 16px;
+            --shadow-light: 0 8px 25px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 15px 35px rgba(0, 0, 0, 0.6);
+            --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.20);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.6, 1);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-image: url("https://uploads.onecompiler.io/43c8gtkh3/43w86f3ec/the%20one3.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+         body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-image: url("https://uploads.onecompiler.io/43c8gtkh3/43w86f3ec/the%20one3.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: -2;
+        }
+
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(78, 205, 196, 0.3) 0%, transparent 50%);
+            animation: float 15s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-gradient);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            font-weight: bold;
+            box-shadow: var(--shadow-medium);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text h1 {
+            color: var(--dark-text);
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text p {
+            color: var(--light-text);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-tab {
+            background: transparent;
+            border: 2px solid transparent;
+            color: var(--light-text);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-gradient);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .nav-tab.active {
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .nav-tab.active::before {
+            left: 0;
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .nav-tab:hover::before {
+            left: 0;
+        }
+
+        .nav-tab:hover {
+            color: white;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(25px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-medium);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-gradient);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            font-weight: bold;
+            box-shadow: var(--shadow-light);
+        }
+
+        .assessment-icon {
+            background: var(--primary-gradient);
+        }
+
+        .result-icon {
+            background: var(--success-gradient);
+        }
+
+        .recommendation-icon {
+            background: var(--accent-gradient);
+        }
+
+        .upload-icon {
+            background: var(--warning-gradient);
+        }
+
+        .card h2 {
+            color: var(--dark-text);
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .form-section {
+            background: rgba(248, 249, 250, 0.3);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .form-section:nth-child(1) { border-left-color: #667eea; }
+        .form-section:nth-child(2) { border-left-color: #4ecdc4; }
+        .form-section:nth-child(3) { border-left-color: #ff6b6b; }
+        .form-section:nth-child(4) { border-left-color: #ff9a56; }
+
+        .form-section:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-light);
+            background: rgba(248, 249, 250, 0.5);
+        }
+
+        .form-section h3 {
+            color: var(--dark-text);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark-text);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 1rem;
+            border: 2px solid rgba(233, 236, 239, 0.6);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            border: 2px solid rgba(233, 236, 239, 0.5);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            transform: scale(1.3);
+            accent-color: #667eea;
+        }
+
+        .btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .result-card {
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: sparkle 3s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .dosha-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dosha-card:hover {
+            transform: scale(1.05) rotateY(5deg);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .dosha-percentage {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dosha-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .dosha-description {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .recommendation-card {
+            background: rgba(248, 249, 250, 0.6);
+            backdrop-filter: blur(15px);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-light);
+            background: rgba(248, 249, 250, 0.8);
+        }
+
+        .diet-card {
+            border-left-color: #4ECDC4;
+        }
+
+        .lifestyle-card {
+            border-left-color: #FF6B6B;
+        }
+
+        .therapy-card {
+            border-left-color: #667eea;
+        }
+
+        .recommendation-card h4 {
+            color: var(--dark-text);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .recommendation-list {
+            list-style: none;
+        }
+
+        .recommendation-list li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--dark-text);
+            font-weight: 500;
+        }
+
+        .recommendation-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ECDC4;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-light);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .health-score {
+            background: var(--success-gradient);
+            color: white;
+            padding: 3rem;
+            border-radius: 24px;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .health-score::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #667eea, #ff6b6b);
+            z-index: -1;
+            border-radius: 24px;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .health-score-value {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .health-score-label {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            font-weight: 600;
+        }
+
+        .upload-area {
+            border: 3px dashed rgba(102, 126, 234, 0.6);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            text-align: center;
+            background: rgba(248, 249, 250, 0.5);
+            backdrop-filter: blur(15px);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(78, 205, 196, 0.8);
+            background: rgba(233, 236, 239, 0.6);
+            transform: translateY(-4px);
+        }
+
+        .upload-area.drag-over {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(233, 236, 239, 0.6);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success-gradient);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .weekly-plan {
+            background: rgba(248, 249, 250, 0.6);
+            backdrop-filter: blur(15px);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .plan-item {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .plan-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        .plan-item h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .plan-item ul {
+            list-style: none;
+        }
+
+        .plan-item li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            position: relative;
+            color: var(--dark-text);
+        }
+
+        .plan-item li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(243, 243, 243, 0.6);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            box-shadow: var(--shadow-medium);
+            z-index: 2000;
+            transform: translateX(400px);
+            transition: var(--transition);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success-gradient);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .health-score-value {
+                font-size: 3.5rem;
+            }
+
+            .logo-text h1 {
+                font-size: 1.5rem;
+            }
+        }
+         body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--nature-gradient);
+            min-height: 100vh;
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background with nature-inspired elements */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--nature-gradient);
+            overflow: hidden;
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(143, 188, 143, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(60, 179, 113, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(152, 251, 152, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(34, 139, 34, 0.2) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        /* Role Selection Screen */
+        .role-selection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--nature-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .role-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: var(--shadow-heavy);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .role-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--ayurvedic-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .role-subtitle {
+            color: var(--light-text);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .role-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .role-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .hospital-role::before {
+            background: var(--hospital-gradient);
+        }
+
+        .patient-role::before {
+            background: var(--patient-gradient);
+        }
+
+        .role-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .role-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .hospital-role .role-icon {
+            color: #2196F3;
+        }
+
+        .patient-role .role-icon {
+            color: #4CAF50;
+        }
+
+        .role-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .role-description {
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        /* Header styles */
+        .header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--ayurvedic-gradient);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            font-weight: bold;
+            box-shadow: var(--shadow-medium);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text h1 {
+            color: var(--dark-text);
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--ayurvedic-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text p {
+            color: var(--light-text);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-tab {
+            background: transparent;
+            border: 2px solid transparent;
+            color: var(--light-text);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--ayurvedic-gradient);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .nav-tab.active {
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .nav-tab.active::before {
+            left: 0;
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+            color: white;
+        }
+
+        .nav-tab:hover::before {
+            left: 0;
+        }
+
+        /* Main content styles */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(25px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-medium);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--ayurvedic-gradient);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-heavy);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(34, 139, 34, 0.1);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            font-weight: bold;
+            box-shadow: var(--shadow-light);
+        }
+
+        /* Hospital-specific styles */
+        .hospital-dashboard .card-icon {
+            background: var(--hospital-gradient);
+        }
+
+        .hospital-dashboard .nav-tab::before {
+            background: var(--hospital-gradient);
+        }
+
+        /* Patient-specific styles */
+        .patient-dashboard .card-icon {
+            background: var(--patient-gradient);
+        }
+
+        .patient-dashboard .nav-tab::before {
+            background: var(--patient-gradient);
+        }
+
+        /* Dashboard grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: var(--transition);
+            border-left: 4px solid;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--light-text);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Patient list and appointments */
+        .patient-list, .appointment-list {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .list-header {
+            background: var(--hospital-gradient);
+            color: white;
+            padding: 1rem 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            font-weight: 600;
+        }
+
+        .list-item {
+            padding: 1rem 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(233, 236, 239, 0.3);
+            transition: var(--transition);
+            align-items: center;
+        }
+
+        .list-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .patient-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .form-section {
+            background: rgba(248, 249, 250, 0.4);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid;
+            transition: var(--transition);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(233, 236, 239, 0.6);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #228B22;
+            box-shadow: 0 0 0 3px rgba(34, 139, 34, 0.1);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .btn {
+            background: var(--ayurvedic-gradient);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-gradient);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .list-header,
+            .list-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .role-options {
+                grid-template-columns: 1fr;
+            }
+
+            .role-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-om"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>AyurSutra</h1>
+                    <p>Advanced Ayurvedic Health Assessment & Wellness Platform</p>
+                </div>
+            </div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchTab('assessment')">
+                    <i class="fas fa-clipboard-list"></i> Assessment
+                </button>
+                <button class="nav-tab" onclick="switchTab('results')" id="resultsTab" style="display: none;">
+                    <i class="fas fa-chart-pie"></i> Results
+                </button>
+                <button class="nav-tab" onclick="switchTab('recommendations')" id="recommendationsTab" style="display: none;">
+                    <i class="fas fa-lightbulb"></i> Recommendations
+                </button>
+                <button class="nav-tab" onclick="switchTab('upload')">
+                    <i class="fas fa-upload"></i> Upload
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Health Assessment Tab -->
+        <div id="assessment" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon assessment-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div>
+                        <h2>Comprehensive Ayurvedic Health Assessment</h2>
+                        <p style="color: var(--light-text); margin-top: 0.5rem;">
+                            Discover your unique constitution and receive personalized wellness guidance
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Personal Information</h3>
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age *</label>
+                            <input type="number" id="age" placeholder="Enter your age" min="1" max="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender *</label>
+                            <select id="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not-to-say">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="weight" class="tooltip" data-tooltip="Weight in kilograms">Weight (kg) *</label>
+                            <input type="number" id="weight" placeholder="Enter your weight" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="height" class="tooltip" data-tooltip="Height in centimeters">Height (cm) *</label>
+                            <input type="number" id="height" placeholder="Enter your height" required>
+                        </div>
+                    </div>
+
+                    <!-- Physical Characteristics -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-running"></i> Physical Characteristics</h3>
+                        <div class="form-group">
+                            <label for="bodyType">Body Build *</label>
+                            <select id="bodyType" required>
+                                <option value="">Select Body Type</option>
+                                
+                        </div>
+                        <div class="form-group">
+                            <label for="skinType">Skin Type *</label>
+                            <select id="skinType" required>
+                                <option value="">Select Skin Type</option>
+                                <option value="dry">Dry, Rough Skin (Vata)</option>
+                                <option value="oily">Oily, Sensitive Skin (Pitta)</option>
+                                <option value="smooth">Smooth, Thick Skin (Kapha)</option>
+                                <option value="combination">Combination Skin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="hairType">Hair Type</label>
+                            <select id="hairType">
+                                <option value="">Select Hair Type</option>
+                                <option value="dry">Dry, Coarse Hair (Vata)</option>
+                                <option value="fine">Fine, Straight Hair (Pitta)</option>
+                                <option value="thick">Thick, Wavy Hair (Kapha)</option>
+                                <option value="curly">Curly/Frizzy Hair</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="energyLevel">Energy Level *</label>
+                            <select id="energyLevel" required>
+                                <option value="">Select Energy Level</option>
+                                <option value="variable">Variable, In Bursts (Vata)</option>
+                                <option value="intense">Intense, Focused (Pitta)</option>
+                                <option value="steady">Steady, Enduring (Kapha)</option>
+                                <option value="low">Generally Low Energy</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Mental & Emotional -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-brain"></i> Mental & Emotional Traits</h3>
+                        <div class="form-group">
+                            <label for="personality">Personality Type</label>
+                            <select id="personality">
+                                <option value="">Select Personality</option>
+                                <option value="creative">Creative, Spontaneous (Vata)</option>
+                                <option value="focused">Focused, Goal-oriented (Pitta)</option>
+                                <option value="calm">Calm, Stable (Kapha)</option>
+                                <option value="analytical">Analytical, Detail-oriented</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="stressResponse">Stress Response *</label>
+                            <select id="stressResponse" required>
+                                <option value="">How do you handle stress?</option>
+                                <option value="anxious">Become anxious, worried (Vata)</option>
+                                <option value="irritable">Become irritable, angry (Pitta)</option>
+                                <option value="withdrawn">Become withdrawn, sluggish (Kapha)</option>
+                                <option value="overwhelmed">Feel overwhelmed, scattered</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sleepPattern">Sleep Pattern *</label>
+                            <select id="sleepPattern" required>
+                                <option value="">Describe your sleep</option>
+                                <option value="light">Light, restless sleep (Vata)</option>
+                                <option value="moderate">Moderate, sound sleep (Pitta)</option>
+                                <option value="deep">Deep, prolonged sleep (Kapha)</option>
+                                <option value="irregular">Irregular sleep patterns</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="appetite">Appetite Pattern *</label>
+                            <select id="appetite" required>
+                                <option value="">Your appetite is usually</option>
+                                <option value="irregular">Irregular, varies daily (Vata)</option>
+                                <option value="strong">Strong, intense hunger (Pitta)</option>
+                                <option value="steady">Steady, moderate (Kapha)</option>
+                                <option value="poor">Generally poor appetite</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Current Health Status -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-heartbeat"></i> Current Health Status</h3>
+                        <div class="form-group">
+                            <label>Current Health Concerns (Select all that apply)</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="digestive" name="concerns">
+                                    <label for="digestive">Digestive Issues</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="anxiety" name="concerns">
+                                    <label for="anxiety">Anxiety/Stress</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="insomnia" name="concerns">
+                                    <label for="insomnia">Sleep Problems</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="fatigue" name="concerns">
+                                    <label for="fatigue">Chronic Fatigue</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="joint" name="concerns">
+                                    <label for="joint">Joint Pain</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="skin" name="concerns">
+                                    <label for="skin">Skin Problems</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="weight" name="concerns">
+                                    <label for="weight">Weight Issues</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="headache" name="concerns">
+                                    <label for="headache">Frequent Headaches</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="mood" name="concerns">
+                                    <label for="mood">Mood Swings</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="circulation" name="concerns">
+                                    <label for="circulation">Poor Circulation</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="medications">Current Medications/Supplements</label>
+                            <textarea id="medications" rows="3" placeholder="List any medications, supplements, or herbs you're taking..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="lifestyle">Activity Level *</label>
+                            <select id="lifestyle" required>
+                                <option value="">Select Activity Level</option>
+                                <option value="sedentary">Sedentary (desk job, minimal exercise)</option>
+                                <option value="moderate">Moderately Active (regular exercise 2-3x/week)</option>
+                                <option value="active">Very Active (exercise 4+ times/week)</option>
+                                <option value="athlete">Athletic (intense training/physical job)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="diet">Dietary Preferences</label>
+                            <select id="diet">
+                                <option value="">Select Diet Type</option>
+                                <option value="omnivore">Omnivore (all foods)</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="vegan">Vegan</option>
+                                <option value="pescatarian">Pescatarian</option>
+                                <option value="keto">Ketogenic</option>
+                                <option value="paleo">Paleo</option>
+                                <option value="other">Other/Special Diet</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn" onclick="analyzeHealth()">
+                        <i class="fas fa-microscope"></i> Analyze My Health Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Medical Certificate Tab -->
+        <div id="upload" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon upload-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <div>
+                        <h2>Upload Medical Certificate</h2>
+                        <p style="color: var(--light-text); margin-top: 0.5rem;">
+                            Upload your medical documents for comprehensive analysis
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('medicalCertificate').click()">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #667eea; margin-bottom: 1rem;"></i>
+                    <h3 style="margin-bottom: 1rem;">Drop files here or click to browse</h3>
+                    <p style="color: var(--light-text);">Supported formats: PDF, JPG, PNG (Max 10MB)</p>
+                    <input type="file" id="medicalCertificate" accept=".pdf,.jpg,.jpeg,.png" style="display: none;" multiple>
+                </div>
+                
+                <div id="uploadedFiles" style="margin-top: 2rem;"></div>
+                <div id="uploadProgress" style="display: none; margin-top: 1rem;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn" onclick="uploadCertificate()">
+                        <i class="fas fa-upload"></i> Upload Documents
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Tab -->
+        <div id="results" class="tab-content">
+            <div class="health-score">
+                <div class="health-score-value" id="healthScore">85</div>
+                <div class="health-score-label">Ayurvedic Wellness Score</div>
+                <p style="margin-top: 1rem; opacity: 0.95; font-size: 1.1rem;">
+                    Based on your constitutional analysis and current health status
+                </p>
+            </div>
+
+            <div class="result-card">
+                <h2 style="margin-bottom: 2rem; text-align: center; font-size: 2rem;">
+                    <i class="fas fa-yin-yang"></i> Your Ayurvedic Constitution (Prakriti)
+                </h2>
+                <div class="result-summary" id="doshaResults">
+                    <div class="dosha-card" style="border: 2px solid rgba(255,107,107,0.3);">
+                        <div class="dosha-percentage" id="vataPercentage">35%</div>
+                        <div class="dosha-name"><i class="fas fa-wind"></i> Vata</div>
+                        <div class="dosha-description">Movement & Nervous System</div>
+                    </div>
+                    <div class="dosha-card" style="border: 2px solid rgba(78,205,196,0.3);">
+                        <div class="dosha-percentage" id="pittaPercentage">40%</div>
+                        <div class="dosha-name"><i class="fas fa-fire"></i> Pitta</div>
+                        <div class="dosha-description">Metabolism & Transformation</div>
+                    </div>
+                    <div class="dosha-card" style="border: 2px solid rgba(102,126,234,0.3);">
+                        <div class="dosha-percentage" id="kaphaPercentage">25%</div>
+                        <div class="dosha-name"><i class="fas fa-mountain"></i> Kapha</div>
+                        <div class="dosha-description">Structure & Stability</div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="doshaChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon result-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h2>Detailed Health Analysis</h2>
+                </div>
+                <div id="healthAnalysis" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="color: #667eea; margin-bottom: 1rem;"><i class="fas fa-user-circle"></i> Primary Constitution</h4>
+                        <p id="primaryDosha">Pitta-Vata Dominant</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="color: #ff6b6b; margin-bottom: 1rem;"><i class="fas fa-exclamation-triangle"></i> Current Imbalances</h4>
+                        <p id="imbalances">Excess Pitta, Low Kapha</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="color: #ff9a56; margin-bottom: 1rem;"><i class="fas fa-shield-alt"></i> Risk Factors</h4>
+                        <p id="riskFactors">Stress-related digestive issues, tendency towards inflammation</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="color: #4ecdc4; margin-bottom: 1rem;"><i class="fas fa-star"></i> Key Strengths</h4>
+                        <p id="strengths">Strong metabolism, mental clarity, adaptable nature</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+           <div class="animated-bg"></div>
+
+    <!-- Role Selection Screen -->
+    <div class="role-selection" id="roleSelection">
+        <div class="role-container">
+            <h1 class="role-title">Welcome to AyurSutra</h1>
+            <p class="role-subtitle">Choose your role to access the appropriate portal</p>
+            
+            <div class="role-options">
+                <div class="role-card hospital-role" onclick="selectRole('hospital')">
+                    <i class="fas fa-hospital role-icon"></i>
+                    <h3 class="role-name">Healthcare Provider</h3>
+                    <p class="role-description">
+                        Access comprehensive patient management tools, view assessments, 
+                        create treatment plans, and monitor patient progress with advanced 
+                        Ayurvedic analytics and reporting features.
+                    </p>
+                </div>
+                
+                <div class="role-card patient-role" onclick="selectRole('patient')">
+                    <i class="fas fa-user-heart role-icon"></i>
+                    <h3 class="role-name">Patient Portal</h3>
+                    <p class="role-description">
+                        Take personalized health assessments, view your dosha constitution, 
+                        receive customized recommendations, track wellness progress, and 
+                        manage appointments with qualified practitioners.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hospital Dashboard -->
+    <div id="hospitalDashboard" class="hospital-dashboard" style="display: none;">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🏥</div>
+                    <div class="logo-text">
+                        <h1>AyurSutra Pro</h1>
+                        <p>Healthcare Provider Portal</p>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">Dr</div>
+                    <div>
+                        <div style="font-weight: 600;">Dr. Priya Sharma</div>
+                        <div style="font-size: 0.85rem; color: var(--light-text);">Ayurvedic Physician</div>
+                    </div>
+                    <button class="btn btn-danger" onclick="logout()" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <nav class="nav-tabs">
+                <button class="nav-tab active" onclick="showHospitalTab('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </button>
+                <button class="nav-tab" onclick="showHospitalTab('patients')">
+                    <i class="fas fa-users"></i> Patients
+                </button>
+                <button class="nav-tab" onclick="showHospitalTab('appointments')">
+                    <i class="fas fa-calendar-check"></i> Appointments
+                </button>
+                <button class="nav-tab" onclick="showHospitalTab('assessments')">
+                    <i class="fas fa-clipboard-list"></i> Assessments
+                </button>
+                <button class="nav-tab" onclick="showHospitalTab('reports')">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </button>
+            </nav>
+
+            <!-- Hospital Dashboard Tab -->
+            <div id="hospital-dashboard" class="tab-content active">
+                <div class="dashboard-grid">
+                    <div class="stat-card" style="border-left-color: #2196F3;">
+                        <div class="stat-value" style="color: #2196F3;">247</div>
+                        <div class="stat-label">Active Patients</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #4CAF50;">
+                        <div class="stat-value" style="color: #4CAF50;">38</div>
+                        <div class="stat-label">Today's Appointments</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #FF9800;">
+                        <div class="stat-value" style="color: #FF9800;">142</div>
+                        <div class="stat-label">Pending Assessments</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #9C27B0;">
+                        <div class="stat-value" style="color: #9C27B0;">95%</div>
+                        <div class="stat-label">Treatment Success Rate</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h2>Recent Activity Overview</h2>
+                            <p style="color: var(--light-text);">Quick insights into patient care and clinic performance</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div style="background: rgba(33, 150, 243, 0.1); padding: 1.5rem; border-radius: 12px;">
+                            <h4 style="color: #2196F3; margin-bottom: 1rem;"><i class="fas fa-user-plus"></i> New Registrations</h4>
+                            <p style="font-size: 2rem; font-weight: 700; color: #2196F3;">12</p>
+                            <p style="color: var(--light-text); font-size: 0.9rem;">This week</p>
+                        </div>
+                        <div style="background: rgba(76, 175, 80, 0.1); padding: 1.5rem; border-radius: 12px;">
+                            <h4 style="color: #4CAF50; margin-bottom: 1rem;"><i class="fas fa-check-circle"></i> Completed Treatments</h4>
+                            <p style="font-size: 2rem; font-weight: 700; color: #4CAF50;">28</p>
+                            <p style="color: var(--light-text); font-size: 0.9rem;">This month</p>
+                        </div>
+                        <div style="background: rgba(255, 152, 0, 0.1); padding: 1.5rem; border-radius: 12px;">
+                            <h4 style="color: #FF9800; margin-bottom: 1rem;"><i class="fas fa-star"></i> Average Rating</h4>
+                            <p style="font-size: 2rem; font-weight: 700; color: #FF9800;">4.8/5</p>
+                            <p style="color: var(--light-text); font-size: 0.9rem;">Patient satisfaction</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hospital Patients Tab -->
+            <div id="hospital-patients" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <h2>Patient Management</h2>
+                            <p style="color: var(--light-text);">Comprehensive patient records and health monitoring</p>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-list">
+                        <div class="list-header">
+                            <div>Patient Details</div>
+                            <div>Dosha Type</div>
+                            <div>Last Visit</div>
+                            <div>Actions</div>
+                        </div>
+                        <div class="list-item">
+                            <div style="display: flex; align-items: center;">
+                                <div class="patient-avatar">RS</div>
+                                <div>
+                                    <div style="font-weight: 600;">Rahul Sharma</div>
+                                    <div style="font-size: 0.9rem; color: var(--light-text);">ID: PT001 | Age: 32</div>
+                                </div>
+                            </div>
+                            <div><span style="background: rgba(255,107,107,0.2); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Vata Dominant</span></div>
+                            <div style="color: var(--light-text);">Dec 8, 2024</div>
+                            <div>
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; margin-right: 0.5rem;">View Profile</button>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div style="display: flex; align-items: center;">
+                                <div class="patient-avatar">PM</div>
+                                <div>
+                                    <div style="font-weight: 600;">Priya Mehta</div>
+                                    <div style="font-size: 0.9rem; color: var(--light-text);">ID: PT002 | Age: 28</div>
+                                </div>
+                            </div>
+                            <div><span style="background: rgba(78,205,196,0.2); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Pitta Dominant</span></div>
+                            <div style="color: var(--light-text);">Dec 7, 2024</div>
+                            <div>
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; margin-right: 0.5rem;">View Profile</button>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div style="display: flex; align-items: center;">
+                                <div class="patient-avatar">AK</div>
+                                <div>
+                                    <div style="font-weight: 600;">Amit Kumar</div>
+                                    <div style="font-size: 0.9rem; color: var(--light-text);">ID: PT003 | Age: 45</div>
+                                </div>
+                            </div>
+
+        <!-- Recommendations Tab -->
+        <div id="recommendations" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon recommendation-icon">
+                        <i class="fas fa-prescription-bottle-alt"></i>
+                    </div>
+                    <div>
+                        <h2>Personalized Ayurvedic Recommendations</h2>
+                        <p style="color: var(--light-text); margin-top: 0.5rem;">
+                            Tailored wellness guidance based on your unique constitution
+                        </p>
+                    </div>
+                </div>
+
+                <div class="recommendations-grid">
+                    <div class="recommendation-card diet-card">
+                        <h4><i class="fas fa-apple-alt"></i> Dietary Guidelines</h4>
+                        <ul class="recommendation-list" id="dietRecommendations">
+                            <li>Favor cooling foods like cucumber, coconut, and leafy greens</li>
+                            <li>Avoid spicy, fried, and processed foods</li>
+                            <li>Eat at regular times to support digestion</li>
+                            <li>Include sweet fruits like pears and melons</li>
+                            <li>Drink cool water and herbal teas</li>
+                        </ul>
+                    </div>
+
+                    <div class="recommendation-card lifestyle-card">
+                        <h4><i class="fas fa-spa"></i> Lifestyle Practices</h4>
+                        <ul class="recommendation-list" id="lifestyleRecommendations">
+                            <li>Practice meditation or pranayama daily</li>
+                            <li>Maintain regular sleep schedule (10 PM - 6 AM)</li>
+                            <li>Avoid excessive heat and sun exposure</li>
+                            <li>Engage in moderate exercise like swimming or yoga</li>
+                            <li>Spend time in nature, especially near water</li>
+                        </ul>
+                    </div>
+
+                    <div class="recommendation-card therapy-card">
+                        <h4><i class="fas fa-leaf"></i> Recommended Therapies</h4>
+                        <ul class="recommendation-list" id="therapyRecommendations">
+                            <li>Shirodhara (oil pouring therapy) for mental calm</li>
+                            <li>Abhyanga with cooling oils like coconut or sunflower</li>
+                            <li>Pranayama (Sheetali and Sheetkari) for cooling</li>
+                            <li>Herbal teas: Chamomile, Fennel, and Coriander</li>
+                            <li>Regular Panchakarma detox (seasonal)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 style="text-align: center; margin-bottom: 2rem; color: var(--dark-text);">
+                        <i class="fas fa-target"></i> Recommended Focus Areas
+                    </h3>
+                    <canvas id="recommendationChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 2rem; color: var(--dark-text);">
+                    <i class="fas fa-calendar-alt"></i> Weekly Wellness Action Plan
+                </h3>
+                <div class="weekly-plan">
+                    <p style="text-align: center; color: var(--light-text); margin-bottom: 1rem;">
+                        Follow this structured approach to integrate Ayurvedic principles into your daily routine
+                    </p>
+                    <div class="plan-grid">
+                        <div class="plan-item">
+                            <h4 style="color: #667eea;"><i class="fas fa-sun"></i> Morning Routine (6-10 AM)</h4>
+                            <ul>
+                                <li>Wake up before sunrise (5:30-6:00 AM)</li>
+                                <li>Drink warm water with lemon and ginger</li>
+                                <li>Practice 15 minutes of meditation</li>
+                                <li>Gentle yoga or stretching exercises</li>
+                                <li>Oil pulling with sesame or coconut oil</li>
+                                <li>Nutritious breakfast aligned with your dosha</li>
+                            </ul>
+                        </div>
+                        <div class="plan-item">
+                            <h4 style="color: #4ECDC4;"><i class="fas fa-clock"></i> Midday Activities (10 AM-6 PM)</h4>
+                            <ul>
+                                <li>Largest meal of the day (12-1 PM)</li>
+                                <li>Short walk after meals to aid digestion</li>
+                                <li>Stay hydrated with room temperature water</li>
+                                <li>Take breaks from screen time</li>
+                                <li>Practice deep breathing exercises</li>
+                                <li>Light, easily digestible snacks if needed</li>
+                            </ul>
+                        </div>
+                        <div class="plan-item">
+                            <h4 style="color: #FF6B6B;"><i class="fas fa-moon"></i> Evening Wind-down (6-10 PM)</h4>
+                            <ul>
+                                <li>Light dinner before 7 PM</li>
+                                <li>Prepare calming herbal tea</li>
+                                <li>Digital detox 1 hour before bed</li>
+                                <li>Self-massage with warm oil (Abhyanga)</li>
+                                <li>Gentle stretching or restorative yoga</li>
+                                <li>Sleep by 10 PM for optimal rest</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 16px; margin-top: 2rem; text-align: center;">
+                    <h3 style="margin-bottom: 1rem;"><i class="fas fa-quote-left"></i> Daily Affirmation</h3>
+                    <p style="font-size: 1.1rem; font-style: italic;" id="dailyAffirmation">
+                        "I honor my body's natural wisdom and nourish myself with mindful choices that support my unique constitution."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userHealthData = {};
+        let doshaChart, recommendationChart;
+
+        // Enhanced form validation
+        function validateForm(data) {
+            const requiredFields = ['fullName', 'age', 'gender', 'weight', 'height', 'bodyType', 'skinType', 'energyLevel', 'stressResponse', 'sleepPattern', 'appetite', 'lifestyle'];
+            const missingFields = requiredFields.filter(field => !data[field] || data[field] === '');
+            
+            if (missingFields.length > 0) {
+                showNotification(`Please complete the following required fields: ${missingFields.map(f => f.replace(/([A-Z])/g, ' $1').toLowerCase()).join(', ')}`, 'error');
+                return false;
+            }
+            
+            // Validate age range
+            if (data.age < 1 || data.age > 120) {
+                showNotification('Please enter a valid age between 1 and 120', 'error');
+                return false;
+            }
+            
+            // Validate weight and height
+            if (data.weight <= 0 || data.height <= 0) {
+                showNotification('Please enter valid weight and height values', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function analyzeHealth() {
+            // Show loading state
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<div class="loading-spinner"></div> Analyzing...';
+            btn.disabled = true;
+
+            // Collect and validate form data
+            const formData = collectFormData();
+            if (!validateForm(formData)) {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return;
+            }
+
+            // Simulate analysis delay
+            setTimeout(() => {
+                // Store user data
+                userHealthData = formData;
+
+                // Calculate dosha percentages with enhanced algorithm
+                const doshaScores = calculateDoshaScores(formData);
+                
+                // Calculate comprehensive health score
+                const healthScore = calculateHealthScore(formData, doshaScores);
+
+                // Update results with animations
+                updateResults(doshaScores, healthScore, formData);
+
+                // Show results tabs
+                document.getElementById('resultsTab').style.display = 'block';
+                document.getElementById('recommendationsTab').style.display = 'block';
+                
+                // Switch to results tab
+                switchTab('results');
+                
+                // Create charts with delay for smooth animation
+                setTimeout(() => {
+                    createDoshaChart(doshaScores);
+                    createRecommendationChart(formData);
+                }, 300);
+
+                // Reset button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                
+                // Show success notification
+                showNotification('Health analysis completed successfully!', 'success');
+            }, 2000);
+        }
+
+        function collectFormData() {
+            const concerns = [];
+            document.querySelectorAll('input[name="concerns"]:checked').forEach(cb => {
+                concerns.push(cb.id);
+            });
+
+            return {
+                fullName: document.getElementById('fullName').value.trim(),
+                age: parseInt(document.getElementById('age').value),
+                gender: document.getElementById('gender').value,
+                weight: parseFloat(document.getElementById('weight').value),
+                height: parseFloat(document.getElementById('height').value),
+                bodyType: document.getElementById('bodyType').value,
+                skinType: document.getElementById('skinType').value,
+                hairType: document.getElementById('hairType').value,
+                energyLevel: document.getElementById('energyLevel').value,
+                personality: document.getElementById('personality').value,
+                stressResponse: document.getElementById('stressResponse').value,
+                sleepPattern: document.getElementById('sleepPattern').value,
+                appetite: document.getElementById('appetite').value,
+                concerns: concerns,
+                medications: document.getElementById('medications').value.trim(),
+                lifestyle: document.getElementById('lifestyle').value,
+                diet: document.getElementById('diet').value
+            };
+        }
+
+        function calculateDoshaScores(data) {
+            let vata = 0, pitta = 0, kapha = 0;
+            const weights = {
+                bodyType: 4,
+                skinType: 3,
+                hairType: 2,
+                energyLevel: 3,
+                personality: 2,
+                stressResponse: 3,
+                sleepPattern: 3,
+                appetite: 3
+            };
+
+            // Enhanced scoring system
+            const doshaMap = {
+                bodyType: { thin: 'vata', medium: 'pitta', heavy: 'kapha', mixed: 'balanced' },
+                skinType: { dry: 'vata', oily: 'pitta', smooth: 'kapha', combination: 'balanced' },
+                hairType: { dry: 'vata', fine: 'pitta', thick: 'kapha', curly: 'vata' },
+                energyLevel: { variable: 'vata', intense: 'pitta', steady: 'kapha', low: 'kapha' },
+                personality: { creative: 'vata', focused: 'pitta', calm: 'kapha', analytical: 'pitta' },
+                stressResponse: { anxious: 'vata', irritable: 'pitta', withdrawn: 'kapha', overwhelmed: 'vata' },
+                sleepPattern: { light: 'vata', moderate: 'pitta', deep: 'kapha', irregular: 'vata' },
+                appetite: { irregular: 'vata', strong: 'pitta', steady: 'kapha', poor: 'vata' }
+            };
+
+            // Calculate base scores
+            Object.keys(doshaMap).forEach(key => {
+                if (data[key] && doshaMap[key][data[key]]) {
+                    const dosha = doshaMap[key][data[key]];
+                    const weight = weights[key] || 1;
+                    
+                    if (dosha === 'vata') vata += weight;
+                    else if (dosha === 'pitta') pitta += weight;
+                    else if (dosha === 'kapha') kapha += weight;
+                    else if (dosha === 'balanced') {
+                        // Distribute evenly for balanced traits
+                        vata += weight / 3;
+                        pitta += weight / 3;
+                        kapha += weight / 3;
+                    }
+                }
+            });
+
+            // Health concerns adjustments
+            const concernMap = {
+                anxiety: 'vata', insomnia: 'vata', mood: 'vata', circulation: 'vata',
+                digestive: 'pitta', skin: 'pitta', headache: 'pitta',
+                weight: 'kapha', fatigue: 'kapha', joint: 'kapha'
+            };
+
+            data.concerns.forEach(concern => {
+                if (concernMap[concern]) {
+                    const dosha = concernMap[concern];
+                    if (dosha === 'vata') vata += 1;
+                    else if (dosha === 'pitta') pitta += 1;
+                    else if (dosha === 'kapha') kapha += 1;
+                }
+            });
+
+            // BMI influence
+            const bmi = data.weight / Math.pow(data.height / 100, 2);
+            if (bmi < 18.5) vata += 2;
+            else if (bmi > 30) kapha += 2;
+            else if (bmi > 25) kapha += 1;
+
+            // Age adjustments
+            if (data.age > 60) vata += 1;
+            else if (data.age < 30) kapha += 1;
+
+            // Normalize to percentages
+            const total = Math.max(vata + pitta + kapha, 1);
+            return {
+                vata: Math.round((vata / total) * 100),
+                pitta: Math.round((pitta / total) * 100),
+                kapha: Math.round((kapha / total) * 100)
+            };
+        }
+
+        function calculateHealthScore(data, doshaScores) {
+            let score = 100;
+
+            // Age factor (more nuanced)
+            if (data.age > 70) score -= 15;
+            else if (data.age > 60) score -= 10;
+            else if (data.age > 50) score -= 5;
+            else if (data.age < 25) score += 5;
+
+            // BMI calculation and adjustment
+            const bmi = data.weight / Math.pow(data.height / 100, 2);
+            if (bmi < 16 || bmi > 35) score -= 20;
+            else if (bmi < 18.5 || bmi > 30) score -= 15;
+            else if (bmi < 20 || bmi > 25) score -= 8;
+            else if (bmi >= 20 && bmi <= 24) score += 5; // Optimal range
+
+            // Lifestyle factors
+            const lifestyleMap = {
+                sedentary: -20,
+                moderate: 0,
+                active: 10,
+                athlete: 5 // Might be too much stress
+            };
+            score += lifestyleMap[data.lifestyle] || 0;
+
+            // Health concerns penalty (progressive)
+            const concernCount = data.concerns.length;
+            score -= concernCount * 7;
+            if (concernCount > 5) score -= 10; // Additional penalty for multiple issues
+
+            // Sleep quality (crucial factor)
+            const sleepMap = {
+                light: -15,
+                irregular: -12,
+                moderate: 5,
+                deep: 10
+            };
+            score += sleepMap[data.sleepPattern] || 0;
+
+            // Stress response
+            const stressMap = {
+                anxious: -10,
+                overwhelmed: -12,
+                irritable: -8,
+                withdrawn: -6
+            };
+            score += stressMap[data.stressResponse] || 0;
+
+            // Appetite regularity
+            if (data.appetite === 'irregular' || data.appetite === 'poor') score -= 8;
+            else if (data.appetite === 'steady') score += 5;
+
+            // Dosha balance bonus
+            const maxDosha = Math.max(doshaScores.vata, doshaScores.pitta, doshaScores.kapha);
+            const minDosha = Math.min(doshaScores.vata, doshaScores.pitta, doshaScores.kapha);
+            const balance = 100 - (maxDosha - minDosha);
+            if (balance > 80) score += 10; // Well-balanced constitution
+            else if (balance < 40) score -= 8; // Highly imbalanced
+
+            return Math.max(Math.min(Math.round(score), 100), 20);
+        }
+
+        function updateResults(doshaScores, healthScore, formData) {
+            // Animated health score update
+            animateNumber('healthScore', 0, healthScore, 2000);
+
+            // Update dosha percentages with animation
+            setTimeout(() => {
+                animateNumber('vataPercentage', 0, doshaScores.vata, 1500, '%');
+                animateNumber('pittaPercentage', 0, doshaScores.pitta, 1500, '%');
+                animateNumber('kaphaPercentage', 0, doshaScores.kapha, 1500, '%');
+            }, 500);
+
+            // Determine primary dosha with more sophisticated logic
+            const sortedDoshas = Object.entries(doshaScores).sort((a, b) => b[1] - a[1]);
+            const [primaryName, primaryScore] = sortedDoshas[0];
+            const [secondaryName, secondaryScore] = sortedDoshas[1];
+            
+            let constitutionText;
+            if (primaryScore - secondaryScore < 10) {
+                // Dual constitution
+                constitutionText = `${capitalize(primaryName)}-${capitalize(secondaryName)} Constitution`;
+            } else if (primaryScore > 50) {
+                // Single dominant constitution
+                constitutionText = `${capitalize(primaryName)} Dominant`;
+            } else {
+                // Balanced with primary tendency
+                constitutionText = `Balanced with ${capitalize(primaryName)} Tendency`;
+            }
+
+            document.getElementById('primaryDosha').textContent = constitutionText;
+
+            // Update detailed health analysis
+            updateHealthAnalysis(doshaScores, formData);
+            updateRecommendations(doshaScores, formData);
+        }
+
+        function animateNumber(elementId, start, end, duration, suffix = '') {
+            const element = document.getElementById(elementId);
+            const range = end - start;
+            const startTime = Date.now();
+            
+            function updateNumber() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 3); // Ease-out cubic
+                const current = Math.round(start + range * easeProgress);
+                
+                element.textContent = current + suffix;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                }
+            }
+            
+            updateNumber();
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function updateHealthAnalysis(doshaScores, formData) {
+            const imbalances = [];
+            const riskFactors = [];
+            const strengths = [];
+
+            // Analyze imbalances with thresholds
+            if (doshaScores.vata > 45) {
+                imbalances.push('Excess Vata');
+                riskFactors.push('anxiety, digestive irregularity, sleep disturbances, joint issues');
+            }
+            if (doshaScores.pitta > 45) {
+                imbalances.push('Excess Pitta');
+                riskFactors.push('inflammation, acidity, skin irritation, anger management');
+            }
+            if (doshaScores.kapha > 45) {
+                imbalances.push('Excess Kapha');
+                riskFactors.push('weight gain, congestion, lethargy, emotional stagnation');
+            }
+
+            // Analyze specific concerns
+            if (formData.concerns.includes('digestive')) {
+                riskFactors.push('digestive fire (Agni) imbalance');
+            }
+            if (formData.concerns.includes('anxiety') || formData.concerns.includes('insomnia')) {
+                riskFactors.push('nervous system hypersensitivity');
+            }
+
+            // Determine strengths based on constitution and lifestyle
+            const dominantDosha = Object.keys(doshaScores).reduce((a, b) => 
+                doshaScores[a] > doshaScores[b] ? a : b
+            );
+
+            const strengthMap = {
+                vata: ['creativity and innovation', 'adaptability and flexibility', 'quick learning ability', 'spiritual inclination'],
+                pitta: ['strong digestion and metabolism', 'leadership qualities', 'mental clarity and focus', 'goal achievement ability'],
+                kapha: ['strong immunity and endurance', 'emotional stability and loyalty', 'steady energy and patience', 'natural nurturing qualities']
+            };
+
+            strengths.push(...strengthMap[dominantDosha].slice(0, 3));
+
+            // Add lifestyle-based strengths
+            if (formData.lifestyle === 'active' || formData.lifestyle === 'athlete') {
+                strengths.push('excellent physical fitness habits');
+            }
+            if (formData.sleepPattern === 'deep' || formData.sleepPattern === 'moderate') {
+                strengths.push('good sleep quality foundation');
+            }
+
+            // Update DOM with more detailed information
+            document.getElementById('imbalances').textContent = 
+                imbalances.length > 0 ? imbalances.join(', ') : 'Well-balanced constitution detected';
+            document.getElementById('riskFactors').textContent = 
+                riskFactors.length > 0 ? [...new Set(riskFactors)].join(', ') : 'Low risk profile - maintain current balance';
+            document.getElementById('strengths').textContent = strengths.join(', ');
+        }
+
+        function updateRecommendations(doshaScores, formData) {
+            const dietRecs = [];
+            const lifestyleRecs = [];
+            const therapyRecs = [];
+
+            // Get dominant dosha for primary recommendations
+            const dominantDosha = Object.keys(doshaScores).reduce((a, b) => 
+                doshaScores[a] > doshaScores[b] ? a : b
+            );
+
+            // Base recommendations by dominant dosha
+            const recommendations = {
+                vata: {
+                    diet: [
+                        'Favor warm, cooked, and nourishing foods',
+                        'Include healthy fats like ghee, nuts, and avocado',
+                        'Avoid raw, cold, and excessively dry foods',
+                        'Eat regular, substantial meals at consistent times',
+                        'Use warming spices: ginger, cinnamon, cardamom, turmeric'
+                    ],
+                    lifestyle: [
+                        'Maintain regular daily routine and sleep schedule',
+                        'Practice calming activities like meditation and gentle yoga',
+                        'Get adequate rest (8-9 hours of sleep)',
+                        'Stay warm and avoid excessive cold exposure',
+                        'Create a peaceful, organized living environment'
+                    ],
+                    therapy: [
+                        'Abhyanga (warm oil massage) with sesame oil',
+                        'Shirodhara for nervous system calming',
+                        'Warm baths with essential oils (lavender, sandalwood)',
+                        'Pranayama: Nadi Shodhana (alternate nostril breathing)',
+                        'Seasonal Panchakarma with Basti (medicated enemas)'
+                    ]
+                },
+                pitta: {
+                    diet: [
+                        'Favor cooling, sweet, and bitter foods',
+                        'Include cucumber, coconut, leafy greens, and sweet fruits',
+                        'Avoid spicy, sour, salty, and fried foods',
+                        'Eat at regular times, never skip meals',
+                        'Drink cool water, herbal teas (mint, fennel, coriander)'
+                    ],
+                    lifestyle: [
+                        'Practice meditation and stress management techniques',
+                        'Maintain regular sleep schedule (10 PM - 6 AM)',
+                        'Avoid excessive heat, sun exposure, and competitive activities',
+                        'Engage in moderate, non-competitive exercise',
+                        'Spend time in nature, especially near water bodies'
+                    ],
+                    therapy: [
+                        'Shirodhara with cooling oils (coconut, sunflower)',
+                        'Abhyanga with coconut or brahmi oil',
+                        'Cooling pranayama (Sheetali, Sheetkari)',
+                        'Herbal teas: chamomile, fennel, rose petal',
+                        'Seasonal Panchakarma with Virechana (therapeutic purgation)'
+                    ]
+                },
+                kapha: {
+                    diet: [
+                        'Favor light, warm, and spicy foods',
+                        'Include warming spices like ginger, black pepper, turmeric',
+                        'Reduce heavy, oily, sweet, and dairy products',
+                        'Eat smaller, more frequent meals',
+                        'Drink warm water and stimulating herbal teas'
+                    ],
+                    lifestyle: [
+                        'Engage in regular vigorous exercise and physical activity',
+                        'Wake up early (before 6 AM) and avoid daytime naps',
+                        'Stay mentally and physically active throughout the day',
+                        'Practice energizing breathing exercises',
+                        'Seek variety and new experiences to prevent stagnation'
+                    ],
+                    therapy: [
+                        'Dry brushing (Garshana) before oil massage',
+                        'Vigorous massage with warm oils (mustard, sesame)',
+                        'Steam treatments (Swedana) to promote circulation',
+                        'Energizing pranayama (Bhastrika, Kapalabhati)',
+                        'Seasonal Panchakarma with Vamana (therapeutic vomiting)'
+                    ]
+                }
+            };
+
+            // Get recommendations for dominant dosha
+            const primaryRecs = recommendations[dominantDosha];
+            dietRecs.push(...primaryRecs.diet);
+            lifestyleRecs.push(...primaryRecs.lifestyle);
+            therapyRecs.push(...primaryRecs.therapy);
+
+            // Add specific recommendations based on health concerns
+            if (formData.concerns.includes('anxiety') || formData.concerns.includes('insomnia')) {
+                lifestyleRecs.push('Practice evening relaxation routine with warm milk and nutmeg');
+                therapyRecs.push('Ashwagandha and Brahmi herbal supplements (consult practitioner)');
+            }
+            
+            if (formData.concerns.includes('digestive')) {
+                dietRecs.push('Drink warm ginger tea before meals to stimulate Agni');
+                therapyRecs.push('Triphala powder before bed for digestive health');
+            }
+            
+            if (formData.concerns.includes('fatigue')) {
+                lifestyleRecs.push('Practice Surya Namaskara (Sun Salutations) in the morning');
+                therapyRecs.push('Chyawanprash in the morning for energy and immunity');
+            }
+
+            // Seasonal recommendations
+            const currentMonth = new Date().getMonth();
+            if (currentMonth >= 2 && currentMonth <= 5) { // Spring/Summer
+                dietRecs.push('Emphasize cooling foods and reduce heating spices during warm seasons');
+            } else { // Fall/Winter
+                dietRecs.push('Include more warming foods and spices during cooler seasons');
+            }
+
+            // Update DOM
+            updateRecommendationList('dietRecommendations', dietRecs.slice(0, 8));
+            updateRecommendationList('lifestyleRecommendations', lifestyleRecs.slice(0, 8));
+            updateRecommendationList('therapyRecommendations', therapyRecs.slice(0, 8));
+
+            // Update daily affirmation based on dominant dosha
+            const affirmations = {
+                vata: "I embrace stability and routine, nourishing my body and mind with gentle, consistent care.",
+                pitta: "I cultivate inner peace and balance, allowing my natural fire to burn steadily without excess.",
+                kapha: "I energize my body and spirit, embracing movement and change with enthusiasm and joy."
+            };
+            
+            document.getElementById('dailyAffirmation').textContent = affirmations[dominantDosha];
+        }
+
+        function updateRecommendationList(elementId, recommendations) {
+            const list = document.getElementById(elementId);
+            list.innerHTML = '';
+            recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                li.style.opacity = '0';
+                li.style.animation = 'fadeInUp 0.5s ease-out forwards';
+                li.style.animationDelay = `${recommendations.indexOf(rec) * 0.1}s`;
+                list.appendChild(li);
+            });
+        }
+
+        function createDoshaChart(doshaScores) {
+            const ctx = document.getElementById('doshaChart').getContext('2d');
+            
+            if (doshaChart) {
+                doshaChart.destroy();
+            }
+
+            doshaChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Vata (Air + Space)', 'Pitta (Fire + Water)', 'Kapha (Earth + Water)'],
+                    datasets: [{
+                        data: [doshaScores.vata, doshaScores.pitta, doshaScores.kapha],
+                        backgroundColor: [
+                            'linear-gradient(135deg, #FF6B6B, #FF8E53)',
+                            'linear-gradient(135deg, #4ECDC4, #44A08D)',
+                            'linear-gradient(135deg, #667eea, #764ba2)'
+                        ],
+                        borderWidth: 3,
+                        borderColor: '#ffffff',
+                        cutout: '65%'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 25,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                },
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    return data.labels.map((label, i) => ({
+                                        text: `${label}: ${data.datasets[0].data[i]}%`,
+                                        fillStyle: ['#FF6B6B', '#4ECDC4', '#667eea'][i],
+                                        strokeStyle: ['#FF6B6B', '#4ECDC4', '#667eea'][i],
+                                        pointStyle: 'circle'
+                                    }));
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.parsed}%`;
+                                },
+                                afterLabel: function(context) {
+                                    const descriptions = [
+                                        'Governs movement, breathing, circulation',
+                                        'Governs digestion, metabolism, transformation', 
+                                        'Governs structure, lubrication, immunity'
+                                    ];
+                                    return descriptions[context.dataIndex];
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutCubic'
+                    }
+                }
+            });
+        }
+
+        function createRecommendationChart(formData) {
+            const ctx = document.getElementById('recommendationChart').getContext('2d');
+            
+            if (recommendationChart) {
+                recommendationChart.destroy();
+            }
+
+            // Calculate focus areas based on user data
+            const focusAreas = calculateFocusAreas(formData);
+
+            recommendationChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Nutrition', 'Physical Activity', 'Sleep Quality', 'Stress Management', 'Seasonal Care', 'Mental Wellness'],
+                    datasets: [
+                        {
+                            label: 'Current Priority Level',
+                            data: focusAreas,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                            pointBackgroundColor: '#667eea',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 3,
+                            pointRadius: 6,
+                            pointHoverBackgroundColor: '#ffffff',
+                            pointHoverBorderColor: '#667eea',
+                            borderWidth: 3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            cornerRadius: 8
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true,
+                                color: 'rgba(102, 126, 234, 0.2)'
+                            },
+                            grid: {
+                                color: 'rgba(102, 126, 234, 0.2)'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                },
+                                color: '#2c3e50'
+                            },
+                            ticks: {
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutCubic'
+                    }
+                }
+            });
+        }
+
+        function calculateFocusAreas(formData) {
+            let nutrition = 5, activity = 5, sleep = 5, stress = 5, seasonal = 5, mental = 5;
+
+            // Adjust based on health concerns
+            if (formData.concerns.includes('digestive')) nutrition += 3;
+            if (formData.concerns.includes('weight')) { nutrition += 2; activity += 2; }
+            if (formData.concerns.includes('fatigue')) { activity += 2; sleep += 2; }
+            if (formData.concerns.includes('insomnia')) sleep += 4;
+            if (formData.concerns.includes('anxiety')) { stress += 4; mental += 3; }
+            if (formData.concerns.includes('mood')) mental += 3;
+            if (formData.concerns.includes('joint')) activity += 2;
+
+            // Lifestyle adjustments
+            if (formData.lifestyle === 'sedentary') activity += 3;
+            if (formData.sleepPattern === 'light' || formData.sleepPattern === 'irregular') sleep += 3;
+            if (formData.stressResponse === 'anxious' || formData.stressResponse === 'overwhelmed') stress += 3;
+            if (formData.appetite === 'irregular' || formData.appetite === 'poor') nutrition += 2;
+
+            // Age-based adjustments
+            if (formData.age > 60) { seasonal += 2; mental += 1; }
+            else if (formData.age < 30) activity += 1;
+
+            return [
+                Math.min(nutrition, 10),
+                Math.min(activity, 10),
+                Math.min(sleep, 10),
+                Math.min(stress, 10),
+                Math.min(seasonal, 10),
+                Math.min(mental, 10)
+            ];
+        }
+
+        // File upload functionality with drag and drop
+        function setupFileUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('medicalCertificate');
+            const uploadedFiles = document.getElementById('uploadedFiles');
+
+            // Drag and drop handlers
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+
+            uploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                
+                const files = e.dataTransfer.files;
+                handleFiles(files);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+
+            function handleFiles(files) {
+                uploadedFiles.innerHTML = '';
+                
+                Array.from(files).forEach(file => {
+                    const fileItem = document.createElement('div');
+                    fileItem.style.cssText = `
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        padding: 1rem;
+                        background: #f8f9fa;
+                        border-radius: 8px;
+                        margin-bottom: 0.5rem;
+                    `;
+                    
+                    const fileIcon = getFileIcon(file.type);
+                    const fileName = file.name.length > 30 ? file.name.substring(0, 30) + '...' : file.name;
+                    const fileSize = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+                    
+                    fileItem.innerHTML = `
+                        <i class="fas ${fileIcon}" style="color: #667eea; font-size: 1.5rem;"></i>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">${fileName}</div>
+                            <div style="color: #7f8c8d; font-size: 0.9rem;">${fileSize}</div>
+                        </div>
+                        <i class="fas fa-check-circle" style="color: #4ecdc4; font-size: 1.2rem;"></i>
+                    `;
+                    
+                    uploadedFiles.appendChild(fileItem);
+                });
+            }
+
+            function getFileIcon(fileType) {
+                if (fileType.includes('pdf')) return 'fa-file-pdf';
+                if (fileType.includes('image')) return 'fa-file-image';
+                return 'fa-file';
+            }
+        }
+
+        function uploadCertificate() {
+            const fileInput = document.getElementById('medicalCertificate');
+            const files = fileInput.files;
+
+            if (files.length === 0) {
+                showNotification('Please select files to upload', 'error');
+                return;
+            }
+
+            // Validate file size (max 10MB per file)
+            for (let file of files) {
+                if (file.size > 10 * 1024 * 1024) {
+                    showNotification(`File "${file.name}" is too large. Maximum size is 10MB.`, 'error');
+                    return;
+                }
+            }
+
+            const progressContainer = document.getElementById('uploadProgress');
+            const progressFill = document.getElementById('progressFill');
+            
+            progressContainer.style.display = 'block';
+            
+            // Simulate upload progress
+            let progress = 0;
+            const uploadInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) {
+                    progress = 100;
+                    clearInterval(uploadInterval);
+                    
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                        progressFill.style.width = '0%';
+                        showNotification(`Successfully uploaded ${files.length} file(s)!`, 'success');
+                    }, 500);
+                }
+                progressFill.style.width = progress + '%';
+            }, 200);
+        }
+
+        function showNotification(message, type) {
+            // Remove any existing notifications
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
+                <span style="margin-left: 0.5rem;">${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            // Hide notification after 4 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // Initialize application
+        window.addEventListener('load', () => {
+            setupFileUpload();
+            
+            // Add subtle animations to cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+
+            // Add keyboard navigation for tabs
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    const tabMap = {
+                        '1': 'assessment',
+                        '2': 'results', 
+                        '3': 'recommendations',
+                        '4': 'upload'
+                    };
+                    
+                    if (tabMap[e.key]) {
+                        e.preventDefault();
+                        if (document.getElementById(tabMap[e.key] + 'Tab') && document.getElementById(tabMap[e.key] + 'Tab').style.display !== 'none') {
+                            switchTab(tabMap[e.key]);
+                        } else if (tabMap[e.key] === 'assessment' || tabMap[e.key] === 'upload') {
+                            switchTab(tabMap[e.key]);
+                        }
+                    }
+                }
+            });
+        });
+
+        // Add form auto-save functionality
+        let autoSaveTimer;
+        function setupAutoSave() {
+            const formInputs = document.querySelectorAll('input, select, textarea');
+            
+            formInputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    clearTimeout(autoSaveTimer);
+                    autoSaveTimer = setTimeout(saveFormData, 1000);
+                });
+            });
+        }
+
+        function saveFormData() {
+            const formData = collectFormData();
+            // In a real application, this would save to a database
+            console.log('Auto-saving form data:', formData);
+        }
+
+        // Enhanced error handling
+        window.addEventListener('error', (e) => {
+            console.error('Application error:', e.error);
+            showNotification('An unexpected error occurred. Please refresh the page.', 'error');
+        });
+
+        // Initialize auto-save on load
+        window.addEventListener('load', setupAutoSave);
+    </script>
+</body>
+</html>
